@@ -2,7 +2,7 @@ fetch`data:;base64,$payload$`
 .then(a=>
   new Response(
     a.body
-    .pipeThrough(new DecompressionStream('deflate-raw'))
+    .pipeThrough(new DecompressionStream('$format$'))
   )
   .text()
   .then(a=>document.write(a))
