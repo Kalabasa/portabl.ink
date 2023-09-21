@@ -37,19 +37,17 @@ async function formatPayload(format, html) {
 }
 
 function byteLength(string) {
-  byteLength.textEncoder = byteLength.textEncoder ?? new TextEncoder();
-  return byteLength.textEncoder.encode(string).length;
+  return new TextEncoder().encode(string).length;
 }
 
-// This function doesn't actually get called at pack time
 function unpack(payload, format) {
   fetch`data:;base64,${payload}`
-    .then(a =>
-      new Response(
-        a.body
-          .pipeThrough(new DecompressionStream(`${format}`))
-      )
-        .text()
-        .then(a => document.write(a))
+  .then(a=>
+    new Response(
+      a.body
+      .pipeThrough(new DecompressionStream(`${format}`))
     )
+    .text()
+    .then(a=>document.documentElement.innerHTML=a)
+  )
 }
