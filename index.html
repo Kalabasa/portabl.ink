@@ -1,14 +1,56 @@
-<!doctype html>
-<html>
-  <head>
-    <title>portabl.ink</title>
-  </head>
-  <body>
-    <h1>portable links</h1>
-    <h2>offline shareable webpages</h1>
-    <label><input type="radio" name="format" /> HTML</label>
-    <label><input type="radio" name="format" /> Markdown</label>
-    <label><input type="radio" name="format" /> Text</label>
-    <textarea></textarea>
-  </body>
-</html>
+<title>portabl.ink</title><meta charset="utf-8">
+<style>@import "http://portabl.ink/e.css";</style>
+<body>
+<h1><a href="http://portabl.ink">portabl.ink</a> – self-contained portable links</h1>
+<div class="h">
+ <div>
+ <div class="x">
+  <button id="$x">📨 get link</button>
+  <button id="$m">⋯</button>
+  <div id="$o">
+  <button id="$r">📄 get unformatted</button><br>
+  <button id="$s">📲 get portabl.ink</button>
+  </div>
+ </div>
+ </div>
+</div>
+<div id="$e" style="min-height:100lvh"></div>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script type="module">
+let a,q=(a=top.Quill)&&new a($e,{formats:"bold,code,italic,link,strike,script,underline,blockquote,header,indent,list,code-block,image,video".split`,`})
+if(q){
+ q.focus()
+ a=document.querySelector(".ql-editor")
+}else{
+ $e.setAttribute("contenteditable","")
+ $e.focus()
+ a=$e
+}
+let n="innerHTML",j="./pack.js"
+$m.onclick=()=>$o.style.display="block"
+$x.onclick=()=>xp(a[n]+`<style>@import "http://portabl.ink/v.css"</style>`,$x)
+$r.onclick=()=>xp(a[n],$r)
+$s.onclick=async()=>{
+ let b,h=(b=document.body)[n]
+ $e[n]=""
+ let p=await(await fetch(j)).text()
+ xp(b[n].replace("//p",p.slice(20)).replace(`(await import(${j})).default`,"pack"),$s)
+ b[n]=h
+}
+let xp=async(ht,el)=>{
+ let c,u=await(await import(j)).default(ht)
+ let t=el.innerText
+ if (c=navigator.clipboard) {
+  await c.writeText(u)
+  let bytes=new TextEncoder().encode(u).length
+  let [x,z]=[...t]
+  el[n]=x+" copied ("+(bytes/1024).toFixed(2)+" KB)"
+  z=="c"||setTimeout(()=>el[n]=t,4e3)
+ }else{
+  el[n]="<input readonly>"
+  ;(c=el.children[0]).value=u
+  c.select()
+  c.onblur=()=>el[n]=t
+ }
+}//p
+</script></body>

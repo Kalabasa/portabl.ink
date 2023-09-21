@@ -1,9 +1,5 @@
 export default pack;
 
-const unpackJs = fetch("unpack.js")
-  .then(r => r.text())
-  .then(t => t.replace(/\s*\n\s*/g, ""));
-
 async function pack(html) {
   const candidates = await Promise.all([
     `data:text/html,${html}`,
@@ -23,9 +19,12 @@ async function pack(html) {
 async function makePackedUrl(format, html) {
   const payload = await formatPayload(format, html);
 
-  const boot = (await unpackJs)
-    .replace("$payload$", payload)
-    .replace("$format$", format);
+  const unpackCode = unpack.toString();
+  const boot = unpackCode
+    .slice(unpackCode.indexOf("\n"), -2)
+    .replace(/\s*\n\s*/g, "")
+    .replace("${payload}", payload)
+    .replace("${format}", format);
 
   return `data:text/html,<body onload="${boot}">`;
 }
@@ -40,4 +39,17 @@ async function formatPayload(format, html) {
 function byteLength(string) {
   byteLength.textEncoder = byteLength.textEncoder ?? new TextEncoder();
   return byteLength.textEncoder.encode(string).length;
+}
+
+// This function doesn't actually get called at pack time
+function unpack(payload, format) {
+  fetch`data:;base64,${payload}`
+    .then(a =>
+      new Response(
+        a.body
+          .pipeThrough(new DecompressionStream(`${format}`))
+      )
+        .text()
+        .then(a => document.write(a))
+    )
 }
