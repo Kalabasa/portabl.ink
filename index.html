@@ -1,56 +1,59 @@
-<title>portabl.ink</title><meta charset="utf-8">
+<title>portabl.ink</title><meta charset=utf-8>
 <style>@import "http://portabl.ink/e.css";</style>
 <body>
-<h1><a href="http://portabl.ink">portabl.ink</a> – self-contained portable links</h1>
-<div class="h">
+<h1><a href=http://portabl.ink>portabl.ink</a> – create self-contained portable links</h1>
+<div class=h>
  <div>
- <div class="x">
-  <button id="$x">📨 get link</button>
-  <button id="$m">⋯</button>
-  <div id="$o">
-  <button id="$r">📄 get unformatted</button><br>
-  <button id="$s">📲 get portabl.ink</button>
+ <div class=x>
+  <button id=$x>📨 get link</button>
+  <button id=$m>⋯</button>
+  <div id=$o>
+  <button id=$r>📄 get unformatted</button><br>
+  <button id=$s>📲 get portabl.ink</button>
   </div>
  </div>
  </div>
 </div>
-<div id="$e" style="min-height:100lvh"></div>
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script type="module">
-let a,q=(a=top.Quill)&&new a($e,{formats:"bold,code,italic,link,strike,script,underline,blockquote,header,indent,list,code-block,image,video".split`,`})
+<div id=$f></div>
+<div id=$e style=min-height:100lvh></div>
+<script src=https://cdn.quilljs.com/1.3.7/quill.js></script>
+<script src=https://unpkg.com/quill-paste-smart@latest/dist/quill-paste-smart.js></script>
+<script type=module>
+let g="p,br,span,bold,b,strong,code,italic,i,em,link,a,strike,s,script,underline,u,blockquote,header,h1,h2,h3,h4,h5,h6,indent,list,ul,ol,li,code-block,pre,image,img,video".split`,`
+let a,q=(a=top.Quill)&&new a($e,{formats:g,modules:{clipboard:{allowed:{tags:g,attributes:["href","target"]}}}})
 if(q){
- q.focus()
- a=document.querySelector(".ql-editor")
+ (a=q.root).focus()
 }else{
  $e.setAttribute("contenteditable","")
  $e.focus()
  a=$e
 }
-let n="innerHTML",j="./pack.js"
-$m.onclick=()=>$o.style.display="block"
-$x.onclick=()=>xp(a[n]+`<style>@import "http://portabl.ink/v.css"</style>`,$x)
-$r.onclick=()=>xp(a[n],$r)
-$s.onclick=async()=>{
+a.oninput=_=>onbeforeunload=_=>1
+let n="innerHTML",o="onclick",j="./pack.js"
+$m[o]=_=>$o.style.display="block"
+$x[o]=_=>xp(a[n]+`<style>@import "http://portabl.ink/v.css"</style><a x href=http://portabl.ink>via portabl.ink</a>`,$x)
+$r[o]=_=>xp(a[n],$r)
+$s[o]=async()=>{
  let b,h=(b=document.body)[n]
  $e[n]=""
  let p=await(await fetch(j)).text()
  xp(b[n].replace("//p",p.slice(20)).replace(`(await import(${j})).default`,"pack"),$s)
  b[n]=h
 }
-let xp=async(ht,el)=>{
+let xp=async(ht,bt)=>{
  let c,u=await(await import(j)).default(ht)
- let t=el.innerText
+ let t=bt.innerText
  if (c=navigator.clipboard) {
   await c.writeText(u)
   let bytes=new TextEncoder().encode(u).length
   let [x,z]=[...t]
-  el[n]=x+" copied ("+(bytes/1024).toFixed(2)+" KB)"
-  z=="c"||setTimeout(()=>el[n]=t,4e3)
+  bt[n]=x+" copied ("+(bytes/1024).toFixed(2)+" KB)"
+  z=="c"||setTimeout(_=>bt[n]=t,4e3)
  }else{
-  el[n]="<input readonly>"
-  ;(c=el.children[0]).value=u
+  bt[n]="<input readonly>"
+  ;(c=bt.children[0]).value=u
   c.select()
-  c.onblur=()=>el[n]=t
+  c.onblur=()=>bt[n]=t
  }
 }//p
-</script></body>
+</script>

@@ -1,3 +1,2 @@
-body{margin:32px auto;max-width:800px;overflow-wrap:break-word}
-body::after{content:'via portabl.ink';display:block;text-align:right;opacity:0.2}
-*{font-size:16px;font-family:system-ui,sans-serif}
+body{margin:0 auto;padding:16px;max-width:800px;overflow-wrap:break-word;font-size:16px;font-family:system-ui,sans-serif}
+body>a:not(:has(+*)){display:block;text-align:right;opacity:0.3}
