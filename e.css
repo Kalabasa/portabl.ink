@@ -1,8 +1,8 @@
 html{background:linear-gradient(#faffff,white);color:#356}
 body{margin:0 auto;max-width:800px;font-size:16px;font-family:system-ui,sans-serif}
-body>h1{display:inline-block;margin:16px 0;padding-right:9.5em;font:inherit;font-weight:bold}
-body>h1>a{color:#08c}
-#\$e{border-radius:8px 8px 0 0;border:solid 1px #eef;background:#fff;color:#000}
+body>h1{display:inline-block;margin:16px 0;padding-right:9.5em;font:inherit;font-size:14px;font-weight:bold}
+body>h1>a{color:#0ac}
+#\$e{border-radius:8px 8px 0 0;border:solid 1px #eff;background:#fff;color:#000}
 #\$e:empty,#\$e[contenteditable]{padding:16px;outline:0}
 .ql-editor{min-height:100%;margin:16px;outline:0}
 .ql-clipboard{display:none}
