@@ -29,7 +29,15 @@ with HTTPServer(server_address, SimpleHTTPRequestHandler) as httpd:
 }
 
 run () {
-google-chrome-stable --user-data-dir=`mktemp -d` --no-first-run --host-rules='MAP portabl.ink 127.0.0.1' 'https://portabl.ink'
+google-chrome-stable \
+  --user-data-dir=`mktemp -d` \
+  --no-first-run \
+  --ignore-certificate-errors \
+  --host-rules='MAP portabl.ink 127.0.0.1' \
+  'https://portabl.ink'
 }
 
-(trap 'kill 0' SIGINT; serve & run)
+trap 'kill 0' SIGINT
+serve &
+run
+kill 0
