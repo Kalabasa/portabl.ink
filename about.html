@@ -35,9 +35,13 @@ To open a portable link, use the <strong>context menu</strong> to <strong>open t
 <p><code>import&nbsp;pack&nbsp;from&nbsp;"https://portabl.ink/pack.js"</code>, or download <code><a href=pack.js target=_blank>pack.js</a></code>.</p>
 <p>More on <a href=//github.com/Kalabasa/portabl.ink>GitHub</a>.</p>
 <br>
+<h3>why?</h3>
+<p>for fun</p>
+<br>
 <h3>related tools</h3>
 <p>Similar projects include <a href=//itty.bitty.site target=_blank>itty.bitty</a>, meml.ink, <a href=//github.com/shakna-israel/selfedit target=_blank>selfedit</a>, and <a href=//github.com/gildas-lormeau/SingleFile target=_blank>SingleFile</a>.</p>
+<br>
 <script>
 [...document.querySelectorAll("[href^='data:']")].map(a=>
- a.onclick=`location='${encodeURI(a.href)}'`)
+ a.onclick=_=>navigator.clipboard?.writeText(encodeURI(a.href))&&alert("☑ Link copied!"))
 </script>

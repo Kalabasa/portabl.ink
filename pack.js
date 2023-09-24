@@ -1,12 +1,15 @@
 export default pack;
 
-async function pack(html) {
+async function pack(html,ext={}) {
   const candidates = await Promise.all([
     `data:text/html,${html}`,
     makePackedUrl("gzip", html),
     makePackedUrl("deflate", html),
     makePackedUrl("deflate-raw", html),
+    ...(ext.makePackedUrls?.(html) ?? [])
   ]);
+
+  if (ext?.index != null) return candidates[ext.index];
 
   let shortest = candidates[0];
   for (const c of candidates) {
@@ -30,10 +33,12 @@ async function makePackedUrl(format, html) {
 }
 
 async function formatPayload(format, html) {
-  const data = new Blob([html]).stream()
-    .pipeThrough(new CompressionStream(format))
-  const buffer = await new Response(data).arrayBuffer();
-  return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+  const comp = await new Response(
+    new Blob([html])
+      .stream()
+      .pipeThrough(new CompressionStream(format))
+  ).arrayBuffer();
+  return btoa(String.fromCharCode(...new Uint8Array(comp)));
 }
 
 function byteLength(string) {
