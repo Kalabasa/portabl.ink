@@ -2,7 +2,7 @@ export default pack;
 
 async function pack(html,ext={}) {
   const candidates = await Promise.all([
-    `data:text/html,${html}`,
+    `data:text/html${getCharsetParam(html)},${html}`,
     makePackedUrl("gzip", html),
     makePackedUrl("deflate", html),
     makePackedUrl("deflate-raw", html),
@@ -29,10 +29,12 @@ async function makePackedUrl(format, html) {
     .replace("${payload}", payload)
     .replace("${format}", format);
 
-  const utf8 = /\p{ASCII}/u.test(boot);
-  const charsetParam = utf8 ? ";charset=utf8" : "";
+  return `data:text/html${getCharsetParam(boot)},<body onload="${boot}">`;
+}
 
-  return `data:text/html${charsetParam},<body onload="${boot}">`;
+function getCharsetParam(content) {
+  const isAscii = /^[\x00-\x7F]*$/.test(content);
+  return isAscii ? "" : ";charset=utf8";
 }
 
 async function formatPayload(format, html) {
