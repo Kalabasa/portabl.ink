@@ -10,7 +10,7 @@
   <td>🔒 <b>Private:</b> Create and view links without tracking. Nothing is stored on servers.
   <td>🔑 <b>Secure:</b> Content can't be accessed without the link.
 <tr>
-  <td>🪙 <b>Immutable:</b> Links don't change. Links can't be tampered with.
+  <td>🪙 <b>Immutable:</b> Links don't change and can't be tampered with. Always backward-compatible.
   <td>🏠 <b>Self-hostable:</b> Simply get the portabl.ink portable link into your bookmarks ;)
 </table>
 <br>
@@ -40,17 +40,19 @@
 <h3>library</h3>
 <p>The core link bundling function can be used as a library.</p>
 <p><code>import&nbsp;pack&nbsp;from&nbsp;"https://portabl.ink/pack.js"</code>, or download <a href=pack.js target=_blank>pack.js</a>.</p>
-<p>
-Usage:
-<code><pre>
-import pack from "./pack.js";
-
+<div>
+<code>
+// example_usage.js<br>
+import pack from "./pack.js";<br>
+<br>
 async function copyLink(element) {
-  const url = await pack(element.innerHTML);
-  navigator.clipboard.writeText(url);
-}
-</pre></code>
-</p>
+<div style=padding-left:2ch>
+const url = await pack(element.innerHTML);<br>
+navigator.clipboard.writeText(url);
+</div>
+}<br>
+</code>
+</div>
 <p>More on <a href=//github.com/Kalabasa/portabl.ink>GitHub</a>.</p>
 <br>
 <h3>why?</h3>
@@ -72,7 +74,7 @@ setTimeout(_=>{
   iframe.onload=async()=>{
    let html=iframe.contentDocument.documentElement.outerHTML
    let packed=await pack(html)
-   a.href=packed
+   a.href=packed;
    a.onclick=_=>navigator.clipboard?.writeText(encodeURI(packed))&&alert("☑ Link copied!")
    iframe.srcdoc=packed
    iframe.onload=_=>setTimeout(_=>{
@@ -80,7 +82,8 @@ setTimeout(_=>{
     ,upSz=z(unpacked)
     ,pkSz=z(packed)
     ,pc=(100*(1-pkSz/upSz)|0)+"%"
-    a.parentElement.innerHTML+=` (${f(pkSz)} byte link ${pc} compressed from ${(upSz/1024).toFixed(2)} KB doc)`;
+    a.parentElement.innerHTML+=` (${f(pkSz)} byte link ${pc} compressed from ${(upSz/1024).toFixed(2)} KB doc)`
+    iframe.remove()
    },100)
   }
  })
