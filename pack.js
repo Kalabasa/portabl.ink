@@ -29,7 +29,10 @@ async function makePackedUrl(format, html) {
     .replace("${payload}", payload)
     .replace("${format}", format);
 
-  return `data:text/html,<body onload="${boot}">`;
+  const utf8 = /\p{ASCII}/u.test(boot);
+  const charsetParam = utf8 ? ";charset=utf8" : "";
+
+  return `data:text/html${charsetParam},<body onload="${boot}">`;
 }
 
 async function formatPayload(format, html) {

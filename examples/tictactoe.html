@@ -1,0 +1,48 @@
+<title>Tiny Tic-tac-toe</title>
+
+<style>
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:ui-rounded,"Hiragino Maru Gothic ProN",Quicksand,Comfortaa,Manjari,"Arial Rounded MT","Arial Rounded MT Bold",Calibri,source-sans-pro,sans-serif;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    width:80vmin;
+    height:80vmin;
+  }
+  button{
+    font-size:25vmin;
+    line-height:0;
+    border:solid 0 black;
+  }
+  button:nth-child(3n),
+  button:nth-child(3n-1){
+    border-left-width:8px;
+  }
+  button:nth-child(n+4){
+    border-top-width:8px;
+  }
+</style>
+
+<div class=grid>
+  <button id=00></button>
+  <button id=10></button>
+  <button id=20></button>
+  <button id=01></button>
+  <button id=11></button>
+  <button id=21></button>
+  <button id=02></button>
+  <button id=12></button>
+  <button id=22></button>
+</div>
+
+<img src onerror='
+let i,j,k,m,r=[0,1,2],h="innerHTML",trn=0,z=document.body[h]
+,w=p=>setTimeout(_=>{alert(p+" wins!");document.body[h]=z},100)
+,a=(i,j)=>top[""+i+j]
+,c=_=>["X","O"].map(p=>(r.some(y=>r.every(x=>a(x,y)[h]==p)||r.every(x=>a(y,x)[h]==p)||r.every(x=>a(x,x)[h]==p)||r.every(x=>a(x,2-x)[h]==p)))&&w(p))
+r.map(i=>r.map(j=>(b=>b.onclick=_=>b[h]||(b[h]="XO"[trn^=1],c()))(a(i,j))))
+'>

@@ -1,16 +1,35 @@
 <title>portabl.ink</title><meta charset=utf-8><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>@import"https://portabl.ink/e.css";</style>
+<style>
+html{background:linear-gradient(#faffff,white);color:#356}
+body{display:flex;flex-direction:column;margin:0 auto;min-height:100vh;max-width:800px;font-size:16px;font-family:system-ui,sans-serif}
+body>h1{display:inline-block;margin:14px 12em 14px 16px;font:inherit;font-size:14px;font-weight:bold}
+body>h1>a{color:#0ac}
+#\$f:not(:empty){margin:0 16px 8px}
+#\$e{flex:1;border-radius:8px 8px 0 0;border:solid 1px #eff;background:#fff;color:#000}
+#\$e:empty,#\$e[contenteditable]{padding:16px;outline:0}
+.ql-editor{min-height:calc(100% - 32px);width:calc(100% - 32px);margin:16px;background:#fff;border:0;outline:0;resize:none}
+.ql-clipboard{display:none}
+#\$e:empty::before,.ql-blank::before{content:"Pen your portable prose..";position:absolute;opacity:.2;pointer-events:none}
+.h{position:fixed;top:0;bottom:0;left:50%;width:100lvw;max-width:1600px;transform:translateX(-50%);font:inherit;pointer-events:none}
+.h>*{position:relative;margin:16px}
+.h>*>*{pointer-events:all}
+.h button:hover{background:#4cc}
+.h button,.h button:active{margin-bottom:4px;padding:8px;border:0;border-radius:4px;font:inherit;font-weight:bold;background:#3aa;color:#fff;cursor:pointer}
+.h input{font:inherit}
+#\$t{background:#faffff}
+.x{position:absolute;top:0;right:0;text-align:right}
+</style>
 <h1><a href=https://portabl.ink>portabl.ink</a> – create self-contained portable links – <a href=https://portabl.ink/about.html target=_blank>about</a></h1>
 <div class=h>
  <div>
  <div class=x>
-  <span id="$t"></span>
+  <span id=$t></span>
   <button onclick=cl()>📨 copy link</button>
-  <button onclick=mo()>⋯</button>
-  <div id=$o>
+  <button id=$mo onclick=mo()>⋯</button>
+  <div id=$o style=display:none>
   <button onclick=cr()>📄 copy plain link</button><br>
-  <button onclick=uh() data-ol>🧑‍💻 use plain HTML</button><br>
-  <button onclick=cs() data-ol>📲 get portabl.ink</button>
+  <button onclick=cs() data-ol>📲 get portabl.ink</button><br>
+  <button onclick=uh() data-ol>🧑‍💻 raw html editor</button>
   </div>
  </div>
  </div>
@@ -23,8 +42,8 @@
 <img src onerror='
 let n="innerHTML",e="textContent",j="https:/\/portabl.ink/pack.js",h="h1,h2,h3",g=`p,br,span,bold,b,strong,code,italic,i,em,link,a,strike,s,script,underline,u,blockquote,header,${h},h4,h5,h6,indent,list,ul,ol,li,code-block,pre,image,img,video`.split`,`,a,t,q=(a=(t=top).Quill)&&new a($e,{formats:g,modules:{clipboard:{allowed:{tags:g,attributes:"href,target,src,alt".split`,`}}}}),z=s=>new TextEncoder().encode(s).length,m=location.search.includes("?html")
 if(m){
- $o.remove()
- $f[n]="Input HTML"
+ $mo.remove()
+ $f[n]="<em>input raw html</em>"
  $e[n]="<textarea class=ql-editor>"
  a=$e.firstChild
 }else if(q)
@@ -35,7 +54,7 @@ else{
 a.oninput=_=>onbeforeunload=_=>1
 t.mo=_=>$o.style.display="block"
 t.cr=_=>xp(m?a.value:a[n])
-t.cl=m?t.cr:_=>xp(`<meta charset=utf-8><title>${a.querySelector(h)?.[e]??a[e].split` `.slice(0,3).join` `}</title>${a[n]}<style>@import"https://portabl.ink/v.css"</style><a x href=https://portabl.ink>via portabl.ink`)
+t.cl=m?t.cr:_=>xp(`<meta charset=utf-8><title>${a.querySelector(h)?.[e]??a[e].split` `.slice(0,3).join` `}</title>${a[n]}<style>@import"https://portabl.ink/v.css"</style><a x href=https://portabl.ink>via portabl.ink`,a[n])
 t.uh=_=>location="/?html"
 t.cs=async()=>{
  let p=(await(await fetch(j)).text()).replace(/(\n+\s+)+/g,"\n")
@@ -43,13 +62,13 @@ t.cs=async()=>{
   .replace("/\/i",p.slice(20))
   .replace(`(\await import(j)).default`," pack")
   .replace(/\n.+data-ol...+$/m,""))}
-let xp=async(ht)=>{
+let xp=async(ht,src=ht)=>{
  if(!ht)return
  let c,u=await(await import(j)).default(ht,t.ext)
  if (c=navigator.clipboard) {
   await c.writeText(u)
-  let orig=z(ht),comp=z(u)
-  $t[n]=`copied ${(comp/1024).toFixed(2)} KB (${100*(1-comp/orig)|0}% compressed)`
+  let orig=z(src),comp=z(u)
+  $t[n]=`copied ${(comp/1024).toFixed(2)} KB`+(comp<orig?` (${100*(1-comp/orig)|0}% compressed)`:"")
   setTimeout(_=>$t[n]="",4e3)
  }else{
   $t[n]="<input readonly>"
